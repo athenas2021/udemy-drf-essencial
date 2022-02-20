@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'rest_framework',
     'cursos'
 ]
 
@@ -130,3 +132,13 @@ MEDIA_URL = 'media/'
 
 # Caminho para pasta dos arquivos de mídiaa
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication', # Defino a autenticação para requisições na API como autenticação por sessão (TODO: mudar para token)
+    ),
+    'DEFAULT_PERMISSION': (
+        'rest_framework.permissions.IsAuthenticationOrReadOnly'
+    )
+}
