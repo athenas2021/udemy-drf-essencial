@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'rest_framework.authtoken',
     'cursos'
 ]
 
@@ -136,7 +137,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DRF
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication', # Defino a autenticação para requisições na API como autenticação por sessão (TODO: mudar para token)
+        # 'rest_framework.authentication.SessionAuthentication', # Defino a autenticação para requisições na API como autenticação por sessão
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION': (
         'rest_framework.permissions.IsAuthenticationOrReadOnly'
