@@ -1,5 +1,6 @@
 from dataclasses import field
 from rest_framework import serializers
+from django.db.models import Avg # Média
 
 from .models import Curso, Avaliacao
 
@@ -20,11 +21,22 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
             'criacao',
             'ativo'
         )
+        
+        def validate_avaliacao(self, valor):
+            if valor in range (1, 6):
+                return valor
+            raise serializers.ValidationError('A avaliação precisa ser de 1 a 5')
 
 class CursoSerializer(serializers.ModelSerializer):
     # Nested Relationship
     avaliacoes =  AvaliacaoSerializer(many=True, read_only=True)
+    media_avaliacoes = serializers.SerializerMethodFiled()
 
+    def get_media_avaliacoes(self, obj):
+        media  = obj.avaliacoes.aggretate(Avg('Avaliacao')).get('avaliacao_avg')
+        if media is None:
+            return 0
+        return  round(media * 2) / 2
     # Hyperlinked Related Field
     # avaliacoes = serializers.HyperlinkedRelatedField(many=True, read_only=True,
     # view_name='avaliacao-detail')
@@ -39,7 +51,8 @@ class CursoSerializer(serializers.ModelSerializer):
             'url',
             'criacao',
             'ativo',
-            'avaliacoes'
+            'avaliacoes',
+            'media_avaliacoes'
         )
 
 ''' 
