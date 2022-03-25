@@ -30,7 +30,7 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
 class CursoSerializer(serializers.ModelSerializer):
     # Nested Relationship
     avaliacoes =  AvaliacaoSerializer(many=True, read_only=True)
-    media_avaliacoes = serializers.SerializerMethodFiled()
+    media_avaliacoes = serializers.SerializerMethodField()
 
     def get_media_avaliacoes(self, obj):
         media  = obj.avaliacoes.aggretate(Avg('Avaliacao')).get('avaliacao_avg')
